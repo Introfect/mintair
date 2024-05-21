@@ -8,7 +8,7 @@ export async function POST(req, res){
     const result= await siweMessage.verify({signature})
     if(result.success){
         console.log(result)
-        return new Response(result,{status:200})
+        return new Response(result.success,{status:200})
         
     }
  }catch(error){
