@@ -1,6 +1,8 @@
 import AuthProviders from "@/utils/authProviders";
 import Providers from "@/utils/providers";
 import { Inter } from 'next/font/google'
+import "./globals.css";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

@@ -3,6 +3,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultConfig,
   RainbowKitProvider,
+  RainbowKitAuthenticationProvider,
+  createAuthenticationAdapter
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
@@ -16,8 +18,7 @@ import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
-import { RainbowKitSiweNextAuthProvider,GetSiweMessageOptions, } from '@rainbow-me/rainbowkit-siwe-next-auth';
-
+import { SiweMessage } from 'siwe';
 
 const config = getDefaultConfig({
   appName: 'mintair',
@@ -32,15 +33,57 @@ const getSiweMessageOptions= () => ({
 
 const queryClient = new QueryClient();
 
+
+const authenticationAdapter = createAuthenticationAdapter({
+    getNonce: async () => {
+      const response = await fetch('/api/nonce');
+      const nonce= await response.json()
+      return nonce;
+    },
+  
+    createMessage: ({ nonce, address, chainId }) => {
+      return new SiweMessage({
+        domain: window.location.host,
+        address,
+        statement: 'Sign in with Ethereum to the app.',
+        uri: window.location.origin,
+        version: '1',
+        chainId,
+        nonce,
+      });
+    },
+  
+    getMessageBody: ({ message }) => {
+      return message.prepareMessage();
+    },
+  
+    verify: async ({ message, signature }) => {
+      const verifyRes = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, signature }),
+      });
+  
+      return Boolean(verifyRes.ok);
+    },
+  
+    signOut: async () => {
+      await fetch('/api/logout');
+    },
+  });
+
 const Providers =({children})=>{
     return(
         <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitSiweNextAuthProvider getSiweMessageOptions={getSiweMessageOptions}>
+           <RainbowKitAuthenticationProvider
+          adapter={authenticationAdapter}
+          status='unauthenticated'
+        >
         <RainbowKitProvider>
         {children}
         </RainbowKitProvider>
-        </RainbowKitSiweNextAuthProvider>
+        </RainbowKitAuthenticationProvider>
       </QueryClientProvider>
     </WagmiProvider>
     )
