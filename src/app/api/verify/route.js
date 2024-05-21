@@ -7,6 +7,7 @@ export async function POST(req, res){
     const siweMessage=new SiweMessage(message);
     const result= await siweMessage.verify({signature})
     if(result.success){
+        console.log(result)
         res.status(200).json({ok:success})
     }
  }catch(error){
