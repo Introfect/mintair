@@ -1,46 +1,43 @@
+"use client"
 import React from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { motion } from "framer-motion"
+import { AuroraBackground } from './ui/aurora-background';
 
 const isAuth=false
 
 const Hero = () => {
   return (
-    <div className="w-screen min-h-screen ">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="flex flex-col items-center text-center">
-          
-          <div
-           animate={{
-            x: 0,
-            backgroundColor: "#000",
-            boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)",
-            position: "fixed",
-            transitionEnd: {
-              display: "none",
-            },
-          }}
-          className="flex items-center">
-            <h1 className="mr-3 text-5xl font-semibold text-white">Connect Your Wallet to get Started</h1>
-            
-          </div>
+<AuroraBackground>
+      <motion.div
+        initial={{ opacity: 0.0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.8,
+          ease: "easeInOut",
+        }}
+        className="relative flex flex-col gap-4 items-center justify-center px-4"
+      >
+      <h2 className="text-white text-5xl md:text-6xl font-bold text-center">
+        Connect Your Wallet to get Started
+        </h2>
 
-
-          <p className="max-w-xl mt-1 text-lg text-slate-400">
-            Connect your wallets and view all transctions details with stored data 
-          </p>
-
-          <div className="w-full mt-4">
-          
-              <p>Click on the button below to get started
-              </p>
-              
-          </div>
-          <ConnectButton/>  
+        
+        <p className="text-white text-sm md:text-2xl max-w-xl mt-6 text-center">
+        Connect your wallets and view all transctions details with stored data
+        </p>
+        <div className="relative inline-flex  group flex-col sm:flex-row items-center gap-4 mt-6">
+        <div
+            class="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-7xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt">
+        </div>
+          <a href="#" className="relative inline-flex items-center justify-center text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
+           <ConnectButton/>
+          </a>
 
         </div>
-      </div>
-    </div>
+        </motion.div>
+        </AuroraBackground>
   )
 }
 

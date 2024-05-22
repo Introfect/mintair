@@ -1,5 +1,4 @@
-import AuthProviders from "@/utils/authProviders";
-import Providers from "@/utils/providers";
+import Providers from "@/utils/providers"
 import { Inter } from 'next/font/google'
 import "./globals.css";
 
@@ -13,13 +12,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <AuthProviders>
-        <Providers>
-        {children}
+      
+      <body>
+      <Providers>
+      {children}
         </Providers>
-        </AuthProviders>
         </body>
     </html>
-  );
+  )
 }

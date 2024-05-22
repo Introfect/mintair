@@ -4,7 +4,8 @@ import {
   getDefaultConfig,
   RainbowKitProvider,
   RainbowKitAuthenticationProvider,
-  createAuthenticationAdapter
+  createAuthenticationAdapter,
+  darkTheme
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
@@ -14,11 +15,23 @@ import {
   arbitrum,
   base,
 } from 'wagmi/chains';
+import { SessionProvider } from 'next-auth/react';
 import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
+import {Session} from "next-auth"
 import { SiweMessage } from 'siwe';
+import { useCallback,useState } from 'react';
+import { useRouter } from 'next/navigation';
+import merge from 'lodash.merge';
+
+const myTheme = merge(darkTheme(), {
+  colors: {
+    accentColor: '#000000',
+  },
+} );
+
 
 const config = getDefaultConfig({
   appName: 'mintair',
@@ -27,14 +40,10 @@ const config = getDefaultConfig({
   ssr: true,
 });
 
-const getSiweMessageOptions= () => ({
-    statement: 'Do you want to sign in to Mintair application',
-  });
-
 const queryClient = new QueryClient();
 
 
-const authenticationAdapter = createAuthenticationAdapter({
+const createAuthenticationAdapterWithStatus=(setStatus,router)=> createAuthenticationAdapter({
     getNonce: async () => {
       const response = await fetch('/api/nonce');
       const nonce= await response.json()
@@ -62,29 +71,45 @@ const authenticationAdapter = createAuthenticationAdapter({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message, signature }),
-      });
-  
-      return Boolean(verifyRes.ok);
+      },
+    );
+
+    if (verifyRes.ok) {
+      setStatus('authenticated');
+      router.push('/dashboard');
+      return true;
+    } else {
+      setStatus('unauthenticated')
+      return false;
+    }
     },
   
     signOut: async () => {
       await fetch('/api/logout');
+      setStatus('unauthenticated');
+    
     },
   });
 
 const Providers =({children})=>{
+  const router=useRouter()
+    const [status,setStatus] = useState("unauthenticated")
+    const authenticationAdapter = useCallback(createAuthenticationAdapterWithStatus(setStatus,router), [setStatus,router]);
+
     return(
         <WagmiProvider config={config}>
+          <SessionProvider refetchInterval={0}>
       <QueryClientProvider client={queryClient}>
            <RainbowKitAuthenticationProvider
           adapter={authenticationAdapter}
-          status='unauthenticated'
+          status={status}
         >
-        <RainbowKitProvider>
+        <RainbowKitProvider theme={myTheme}>
         {children}
         </RainbowKitProvider>
         </RainbowKitAuthenticationProvider>
       </QueryClientProvider>
+      </SessionProvider>
     </WagmiProvider>
     )
 }
