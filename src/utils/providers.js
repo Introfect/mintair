@@ -7,7 +7,7 @@ import {
   createAuthenticationAdapter,
   darkTheme
 } from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, useAccount } from 'wagmi';
 import {
   mainnet,
   polygon,

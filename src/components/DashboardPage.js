@@ -4,6 +4,7 @@ import axios from 'axios'
 import TransactionHistort from './TransactionHistort'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 const DashboardPage = () => {
       const router = useRouter()
   useEffect(() => {
@@ -24,6 +25,7 @@ const DashboardPage = () => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+    isLoading
   } = useInfiniteQuery({
     queryKey: ['transaction'],
     queryFn: getData,
@@ -33,9 +35,15 @@ const DashboardPage = () => {
   })
 
   const Tdata = data?.pages?.flatMap(page => page.result) || []
-
+console.log(isFetchingNextPage,"dash")
   return (
-    <div><TransactionHistort data={Tdata} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage}/></div>
+    <div className='bg-black h-screen w-full p-8 py-12'>
+    <div className='bg-white w-full h-full rounded-xl flex items-center justify-center'>
+    <TransactionHistort data={Tdata} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage}isLoading={isLoading}/>
+    </div>
+
+</div>
+    
   )
 }
 

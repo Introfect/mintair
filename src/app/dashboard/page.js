@@ -1,10 +1,11 @@
 
+
 import DashboardPage from '@/components/DashboardPage'
 
 const Page = () => {
 
   return (
-    <div>
+    <div className='h-screen'>
      <DashboardPage/>
     </div>
   )
