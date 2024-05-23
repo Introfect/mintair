@@ -3,10 +3,19 @@ import React from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { motion } from "framer-motion"
 import { AuroraBackground } from './ui/aurora-background';
-
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 const isAuth=false
 
 const Hero = () => {
+  const router=useRouter()
+
+  // useEffect(() => {
+  //   const data= localStorage.getItem('rk-latest-id')
+  //   if(!data){
+  //     router.push("/dashboard")
+  //   }
+  // },[])
   return (
 <AuroraBackground>
       <motion.div
