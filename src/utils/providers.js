@@ -20,7 +20,6 @@ import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
-import {Session} from "next-auth"
 import { SiweMessage } from 'siwe';
 import { useCallback,useState } from 'react';
 import { useRouter } from 'next/navigation';
