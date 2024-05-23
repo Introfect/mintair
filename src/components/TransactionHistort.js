@@ -48,11 +48,11 @@ const TransactionHistort = ({ data, fetchNextPage, hasNextPage, isFetchingNextPa
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="relative flex flex-col gap-4 items-center justify-center px-4"
+        className="flex flex-col gap-4 items-center justify-center px-4"
       >
         <section className="py-24">
              {popupSwitch?(
-                            <div className='w-full h-full absolute top-0  flex items-center justify-center'>
+                            <div className='w-full h-full absolute top-0 left-0 bg-slate-700/50  flex items-center justify-center'>
                                 <div class="bg-white overflow-hidden shadow rounded-lg border">
     <div class="px-4 py-5 sm:px-6 flex justify-between">
         <div>
@@ -109,6 +109,14 @@ const TransactionHistort = ({ data, fetchNextPage, hasNextPage, isFetchingNextPa
                     {popupData.isError=="1"?`Error`:`Success`}
                 </dd>
             </div>
+            {popupData.isError=="1"? <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">
+                    Error code
+                </dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {popupData.errCode}
+                </dd>
+            </div>:null}
         </dl>
     </div>
 </div>

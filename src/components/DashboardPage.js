@@ -5,6 +5,8 @@ import TransactionHistort from './TransactionHistort'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import {toast} from 'react-hot-toast'
+
 const DashboardPage = () => {
       const router = useRouter()
   useEffect(() => {
@@ -25,12 +27,24 @@ const DashboardPage = () => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-    isLoading
   } = useInfiniteQuery({
     queryKey: ['transaction'],
     queryFn: getData,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage?.result?.length ? allPages.length + 1 : undefined
+    },
+    onError:(err)=>{
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return toast.error('Please connect wallet')
+        }
+      }
+
+      return toast.error("Something went wrong")
+
+    },
+    onSuccess: () => {
+     
     },
   })
 
@@ -38,8 +52,8 @@ const DashboardPage = () => {
 console.log(isFetchingNextPage,"dash")
   return (
     <div className='bg-black h-screen w-full p-8 py-12'>
-    <div className='bg-white w-full h-full rounded-xl flex items-center justify-center'>
-    <TransactionHistort data={Tdata} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage}isLoading={isLoading}/>
+    <div className='bg-white w-full h-full rounded-xl flex items-center justify-center relative'>
+    <TransactionHistort data={Tdata} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage}/>
     </div>
 
 </div>
