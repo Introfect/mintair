@@ -25,7 +25,7 @@ module.exports = {
       },
       animation: {
         aurora: "aurora 60s linear infinite",
-      },
+    },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -33,8 +33,10 @@ module.exports = {
       },
     },
   },
+
   plugins: [require("tailwindcss-animate"),addVariablesForColors],
 };
+
 
 
 function addVariablesForColors({ addBase, theme }) {

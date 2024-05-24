@@ -10,12 +10,6 @@ const isAuth=false
 const Hero = () => {
   const router=useRouter()
 
-  // useEffect(() => {
-  //   const data= localStorage.getItem('rk-latest-id')
-  //   if(!data){
-  //     router.push("/dashboard")
-  //   }
-  // },[])
   return (
 <AuroraBackground>
       <motion.div

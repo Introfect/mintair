@@ -4,8 +4,8 @@ import axios from 'axios'
 import TransactionHistort from './TransactionHistort'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import {toast} from 'react-hot-toast'
+import AutoScrollingCards from './AutoScrollingCards'
 
 const DashboardPage = () => {
       const router = useRouter()
@@ -51,12 +51,11 @@ const DashboardPage = () => {
   const Tdata = data?.pages?.flatMap(page => page.result) || []
 console.log(isFetchingNextPage,"dash")
   return (
-    <div className='bg-black h-screen w-full p-8 py-12'>
-    <div className='bg-white w-full h-full rounded-xl flex items-center justify-center relative'>
-    <TransactionHistort data={Tdata} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage}/>
+    <div>
+      <AutoScrollingCards data={Tdata}/>
     </div>
+    
 
-</div>
     
   )
 }
