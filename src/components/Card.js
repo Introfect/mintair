@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
-
-const Card = ({data}) => {
-    const [show,setShow]=useState(false)
-    if(show===true){
-        return(
-            <div className='absolute h-screen bg-red-300 w-full z-20'>
-sswqsqwS
-            </div>
-        )
-    }
+import { CircleX } from 'lucide-react'
+const Card = ({data, setShow,index,setIndex}) => {
+  
+function handleClick(){
+    setIndex(index)
+    setShow(true)
+}
   return (
-    
-    <div onClick={()=>{setShow(true)}} className="bg-cyan-900 cursor-pointer rounded-xl shadow-md shadow-gray-500/40 text-white p-4 m-2 w-60 overflow-hidden h-56 flex items-center justify-center">
+    <div>
+       <div onClick={handleClick} className="bg-cyan-900 cursor-pointer rounded-xl shadow-md shadow-gray-500/40 text-white p-4 m-2 w-60 overflow-hidden h-56 flex items-center justify-center">
     <div className="overflow-hidden">
         <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
             <dl className="sm:divide-y sm:divide-gray-200">
@@ -42,9 +39,11 @@ sswqsqwS
             </dl>
         </div>
     </div>
-        
-        {console.log(data,"card")}
       </div>
+
+    </div>
+    
+    
   )
 }
 
